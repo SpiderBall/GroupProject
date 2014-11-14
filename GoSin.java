@@ -27,7 +27,7 @@ public class GoSin{
 			String new_username = in.nextLine();
 			System.out.println("Please enter a password, don't forget it! ");
 			String new_password = in.nextLine();
-			currentUser.User(new_username, new_password);
+			currentUser = new User(new_username, new_password);
 			System.out.println("Congratulations! You now have an account with GoSin. GO FORTH AND FUCK SHIT UP.");
 
 		}
