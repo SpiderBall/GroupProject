@@ -8,6 +8,7 @@ public class GoSin{
 		boolean loggedOn = false; 
 		Scanner in = new Scanner(System.in);
 		String menu_input = "";
+		User currentUser;
 
 		do{
 			System.out.println("Welcome to GoSin, enter one of these options to get started!");
@@ -26,7 +27,7 @@ public class GoSin{
 			String new_username = in.nextLine();
 			System.out.println("Please enter a password, don't forget it! ");
 			String new_password = in.nextLine();
-			User currentUser = User(new_username, new_password);
+			currentUser.User(new_username, new_password);
 			System.out.println("Congratulations! You now have an account with GoSin. GO FORTH AND FUCK SHIT UP.");
 
 		}
