@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class User{
 
-	public User(new_username, new_password){ //constructor that creates a user with a username and password
+	public User User(new_username, new_password){ //constructor that creates a user with a username and password
 		username = new_username;
 		password = new_password;
 
