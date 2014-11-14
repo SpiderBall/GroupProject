@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class GoSin{
 
-	loggedOn = false; 
+	boolean loggedOn = false; 
 	Scanner in = new Scanner(System.in);
 	String menu_input = "";
 
