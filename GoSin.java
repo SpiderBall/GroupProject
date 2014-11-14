@@ -11,9 +11,10 @@ public class GoSin{
 
 		do{
 			System.out.println("Welcome to GoSin, enter one of these options to get started!");
-			System.out.println("1: Register/Log in");
-			System.out.println("2: Post message");
-			System.out.println("3: Browse messages");
+			System.out.println("1: Register");
+			System.out.println("2: Log in");
+			System.out.println("3: Post anonymous message");
+			System.out.println("4: Browse messages as guest");
 			System.out.println("Q: Quit");
 			menu_input = in.nextLine();
 
@@ -21,6 +22,12 @@ public class GoSin{
 		//menu runs until the user quits or the user logs in
 
 		if(menu_input.equals("1")){
+			System.out.println("Please enter an original username, be creative! ");
+			String new_username = in.nextLine();
+			System.out.println("Please enter a password, don't forget it! ");
+			String new_password = in.nextLine();
+			User currentUser = User(new_username, new_password);
+			System.out.println("Congratulations! You now have an account with GoSin. GO FORTH AND FUCK SHIT UP.")
 
 		}
 
