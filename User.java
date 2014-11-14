@@ -40,7 +40,7 @@ public class User{
 		}
 	}
 
-	public void setPassword(new_password){ //we would first need to make sure the user is logged in
+	public void setPassword(String new_password){ //we would first need to make sure the user is logged in
 		password = new_password;
 	}
 
@@ -53,12 +53,26 @@ public class User{
 	} 
 */
 
+	public void setLoggedOnTrue(){
+
+		loggedOn = true;
+	}
+
+	public void setLoggedOnFalse(){
+		loggedOn = false;
+
+	}
+
+
+	public boolean getLoggedOn(){
+		return loggedOn;
+	}
+
+
 
 	protected String username;
 	protected String password;
-	package boolean loggedOn = false; //this just saves us the hassle of using getters and setters
-										//to check if the user is logged in since 
-										//this value can be changed in the main program
+	private boolean loggedOn = false; 
 
 	protected List<String> ListOfUsernames = new ArrayList<String>();
 	//somehow we need to make sure this data doesn't get deleted at the end of runtime
