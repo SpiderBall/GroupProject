@@ -26,7 +26,7 @@ public class User{
 				//enables writing to the created text file
 				try{
 					BufferedWriter writer = 
-							new BufferedWriter(new FileWriter(newTextFIle));
+							new BufferedWriter(new FileWriter(newTextFile));
 					writer.write("Username: " + username);
 					writer.write("Password: " + password);
 					writer.close();
