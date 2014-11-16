@@ -42,6 +42,11 @@ public class User{
 		}
 	}
 
+	public User(){ //default constructor used for non-logged in users
+		
+	}
+
+
 	public void setPassword(String new_password){ //we would first need to make sure the user is logged in
 		password = new_password;
 	}
@@ -116,7 +121,7 @@ public class User{
 
 	protected String username;
 	protected String password;
-	private boolean loggedOn = false; 
+	protected boolean loggedOn = false; 
 
 	protected List<String> ListOfUsernames = new ArrayList<String>();
 	//somehow we need to make sure this data doesn't get deleted at the end of runtime
