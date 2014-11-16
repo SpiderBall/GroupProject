@@ -8,7 +8,7 @@ public class GoSin{
 		boolean loggedOn = false; 
 		Scanner in = new Scanner(System.in);
 		String menu_input = "";
-		User currentUser;
+		User currentUser = new User();
 
 		do{
 			System.out.println("Welcome to GoSin, enter one of these options to get started!");
