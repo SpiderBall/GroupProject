@@ -27,7 +27,7 @@ public class GoSin{
 				while(!added){
 					System.out.println("Please enter an original username, be creative! ");
 					String new_username = in.nextLine();
-					if(currentUser.doesUsernameExist()){ //check if name is taken
+					if(currentUser.doesUsernameExist(new_username)){ //check if name is taken
 						System.out.println("This username is taken, please try again.");
 					}else{
 
