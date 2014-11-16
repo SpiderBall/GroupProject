@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,8 +28,8 @@ public class User{
 				//enables writing to the created text file
 				try{
 					BufferedWriter writer = 
-							new BufferedWriter(new FileWriter(newTextFile));
-					writer.write("Username: " + username);
+							new BufferedWriter(new FileWriter(newTextFle));
+					writer.write("Username: " + username + "/n");
 					writer.write("Password: " + password);
 					writer.close();
 					added = true;
@@ -64,8 +66,49 @@ public class User{
 	}
 
 
-	public boolean getLoggedOn(){
+	public boolean checkIfLoggedOn(){
 		return loggedOn;
+	}
+
+	public boolean doesUsernameExist(String new_username){
+		if ListOfUsernames.contains(new_username){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+
+	public void verifyUser(new_username, new_password){
+
+		if(ListOfUsernames.contains(new_username)){
+
+			username = new_username;
+			try {
+			    File file = new File(username + ".txt");
+			    reader = new BufferedReader(new FileReader(file));
+
+			    String line;
+			    while ((line = reader.readLine()) != null) {
+			        System.out.println(line);
+			    }
+
+			} catch (IOException e) {
+			    e.printStackTrace();
+			} finally {
+			    try {
+			        reader.close();
+			    } catch (IOException e) {
+			        e.printStackTrace();
+			    }
+			}
+
+	}
+
+	public User getUser(String new_username){
+
+		username = new_username;
+
 	}
 
 
