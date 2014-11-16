@@ -86,7 +86,7 @@ public class User{
 
 	public void verifyUser(String new_username, String new_password){
 
-		BufferedReader reader;
+		BufferedReader reader = new BufferedReader();
 		if(ListOfUsernames.contains(new_username)){
 
 			username = new_username;
@@ -112,11 +112,12 @@ public class User{
 		}
 	}
 
+/*
 	public User getUser(String new_username){
 
 		username = new_username;
 
-	}
+	} */
 
 
 
