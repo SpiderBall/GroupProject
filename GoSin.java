@@ -44,7 +44,7 @@ public class GoSin{
 			else if(menu_input.equals("2")){
 
 				boolean currentlyLoggedOn = currentUser.checkIfLoggedOn();
-				while(currentlyLoggedOn.equals(false)){
+				while(!currentlyLoggedOn){
 					System.out.println("Please enter your username");
 					String new_username = in.nextLine();
 					if(currentUser.doesUsernameExist(new_username)){ //check if name matches a username in the system
