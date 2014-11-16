@@ -63,7 +63,7 @@ public class GoSin{
 						}
 					}
 				}else{//if the user is already logged on
-					System.out.println("You are already logged in as " + username + ". If you want to switch users, please log out first.");
+					System.out.println("You are already logged in as " + currentUser.getUsername() + ". If you want to switch users, please log out first.");
 				}
 
 
