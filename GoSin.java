@@ -16,6 +16,7 @@ public class GoSin{
 			System.out.println("2: Log in");
 			System.out.println("3: Post anonymous message");
 			System.out.println("4: Browse messages as guest");
+			System.out.println("5: Log Off");
 			System.out.println("Q: Quit");
 			menu_input = in.nextLine();
 
@@ -44,20 +45,25 @@ public class GoSin{
 			else if(menu_input.equals("2")){
 
 				boolean currentlyLoggedOn = currentUser.checkIfLoggedOn();
-				while(!currentlyLoggedOn){
-					System.out.println("Please enter your username");
-					String new_username = in.nextLine();
-					if(currentUser.doesUsernameExist(new_username)){ //check if name matches a username in the system
-						System.out.println("Please enter your password ");
-						String new_password = in.nextLine();
-						currentUser = new User(new_username, new_password);
-						currentUser.setLoggedOnTrue();
-						System.out.println("Woo! You logged on successfully.");
-						currentlyLoggedOn = true;
-					}else{
+				if(!currentlyLoggedOn){
+					while(!currentlyLoggedOn){
+						System.out.println("Please enter your username");
+						String new_username = in.nextLine();
+						if(currentUser.doesUsernameExist(new_username)){ //check if name matches a username in the system
+							System.out.println("Please enter your password ");
+							String new_password = in.nextLine();
+							currentUser = new User(new_username, new_password);
+							currentUser.setLoggedOnTrue();
+							System.out.println("Woo! You logged on successfully.");
+							currentlyLoggedOn = true;
+						}else{
 
-						
+							System.out.println("You entered the wrong username; please try again.");
+
+						}
 					}
+				}else{//if the user is already logged on
+					System.out.println("You are already logged in as " + username + ". If you want to switch users, please log out first.");
 				}
 
 
