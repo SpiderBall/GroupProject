@@ -30,7 +30,7 @@ public class User{
 					BufferedWriter writer = 
 							new BufferedWriter(new FileWriter(newTextFile));
 					writer.write("Username: " + username);
-					writer.write();
+					writer.newLine();
 					writer.write("Password: " + password);
 					writer.close();
 					added = true;
