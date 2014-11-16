@@ -29,7 +29,8 @@ public class User{
 				try{
 					BufferedWriter writer = 
 							new BufferedWriter(new FileWriter(newTextFile));
-					writer.write("Username: " + username + "/n");
+					writer.write("Username: " + username);
+					writer.write();
 					writer.write("Password: " + password);
 					writer.close();
 					added = true;
