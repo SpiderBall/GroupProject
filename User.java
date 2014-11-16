@@ -28,7 +28,7 @@ public class User{
 				//enables writing to the created text file
 				try{
 					BufferedWriter writer = 
-							new BufferedWriter(new FileWriter(newTextFle));
+							new BufferedWriter(new FileWriter(newTextFile));
 					writer.write("Username: " + username + "/n");
 					writer.write("Password: " + password);
 					writer.close();
@@ -91,7 +91,7 @@ public class User{
 			username = new_username;
 			try {
 			    File file = new File(username + ".txt");
-			    reader = new BufferedReader(new FileReader(file));
+			    BufferedReader reader = new BufferedReader(new FileReader(file));
 
 			    String line;
 			    while ((line = reader.readLine()) != null) {
