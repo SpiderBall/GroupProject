@@ -86,12 +86,13 @@ public class User{
 
 	public void verifyUser(String new_username, String new_password){
 
+		BufferedReader reader;
 		if(ListOfUsernames.contains(new_username)){
 
 			username = new_username;
 			try {
 			    File file = new File(username + ".txt");
-			    BufferedReader reader = new BufferedReader(new FileReader(file));
+			    reader = new BufferedReader(new FileReader(file));
 
 			    String line;
 			    while ((line = reader.readLine()) != null) {
