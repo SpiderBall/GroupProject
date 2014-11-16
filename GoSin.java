@@ -22,19 +22,44 @@ public class GoSin{
 		
 
 			if(menu_input.equals("1")){
-				System.out.println("Please enter an original username, be creative! ");
-				String new_username = in.nextLine();
-				//check if name is taken
 
-				System.out.println("Please enter a password, don't forget it! ");
-				String new_password = in.nextLine();
-				currentUser = new User(new_username, new_password);
-				currentUser.setLoggedOnTrue();
-				System.out.println("Congratulations! You now have an account with GoSin. GO FORTH AND FUCK SHIT UP.");
+				boolean added = false;
+				while(!added){
+					System.out.println("Please enter an original username, be creative! ");
+					String new_username = in.nextLine();
+					if(currentUser.doesUsernameExist()){ //check if name is taken
+						System.out.println("This username is taken, please try again.");
+					}else{
+
+						System.out.println("Please enter a password, don't forget it! ");
+						String new_password = in.nextLine();
+						currentUser = new User(new_username, new_password);
+						currentUser.setLoggedOnTrue();
+						System.out.println("Congratulations! You now have an account with GoSin. GO FORTH AND FUCK SHIT UP.");
+						added = true;
+					}
+				}
 
 			}
-
 			else if(menu_input.equals("2")){
+
+				boolean currentlyLoggedOn = currentUser.checkIfLoggedOn();
+				while(currentlyLoggedOn.equals(false)){
+					System.out.println("Please enter your username");
+					String new_username = in.nextLine();
+					if(currentUser.doesUsernameExist()){ //check if name matches a username in the system
+						System.out.println("Please enter your password ");
+						String new_password = in.nextLine();
+						currentUser = new User(new_username, new_password);
+						currentUser.setLoggedOnTrue();
+						System.out.println("Woo! You logged on successfully.");
+						added = true;
+					}else{
+
+						
+					}
+				}
+
 
 			}
 			else if(menu_input.equals("3")){
