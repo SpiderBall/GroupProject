@@ -47,13 +47,13 @@ public class GoSin{
 				while(currentlyLoggedOn.equals(false)){
 					System.out.println("Please enter your username");
 					String new_username = in.nextLine();
-					if(currentUser.doesUsernameExist()){ //check if name matches a username in the system
+					if(currentUser.doesUsernameExist(new_username)){ //check if name matches a username in the system
 						System.out.println("Please enter your password ");
 						String new_password = in.nextLine();
 						currentUser = new User(new_username, new_password);
 						currentUser.setLoggedOnTrue();
 						System.out.println("Woo! You logged on successfully.");
-						added = true;
+						currentlyLoggedOn = true;
 					}else{
 
 						
