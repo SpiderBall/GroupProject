@@ -71,7 +71,7 @@ public class User{
 	}
 
 	public boolean doesUsernameExist(String new_username){
-		if ListOfUsernames.contains(new_username){
+		if(ListOfUsernames.contains(new_username)){
 			return false;
 		}else{
 			return true;
@@ -79,7 +79,7 @@ public class User{
 	}
 
 
-	public void verifyUser(new_username, new_password){
+	public void verifyUser(String new_username, String new_password){
 
 		if(ListOfUsernames.contains(new_username)){
 
@@ -103,6 +103,7 @@ public class User{
 			    }
 			}
 
+		}
 	}
 
 	public User getUser(String new_username){
