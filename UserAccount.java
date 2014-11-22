@@ -63,13 +63,26 @@ public class UserAccount {
 		   System.out.println(e);
 	   }
 	   
-	   System.out.println(rs.toString());
-	   
-	   	if(rs.toString().equals(new_username)){
-	   		return true;
-	   	}else{
-	   		return false;
-	   	}
+	   try{
+		   System.out.println("entering try 2");
+		   //System.out.println(rs.getString("username"));
+		   String userName = null;
+		   //rs.beforeFirst();
+               while (rs.next()) {
+                 userName = rs.getString("username");                 
+               }
+           
+		   
+		   	if(userName.equals(new_username)){
+		   		return true;
+		   	}else{
+		   		return false;
+		   	}
+	   }catch(Exception e2){
+		   System.out.println("entering catch2");
+		   System.out.println(e2);
+		   return false;
+	   }
 	   
    }
    

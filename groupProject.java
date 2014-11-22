@@ -44,12 +44,12 @@ public class GroupProject {
 				
 			}while(!loggedOn &&(!menu_input.equals("Q"))&&(!menu_input.equals("q")));
 			//menu runs until the user quits or the use
-	      in.close();  
 	      
+	      Scanner input = new Scanner(System.in);
 	      while(loggedOn && (!menu_input.equals("Q"))&&(!menu_input.equals("q"))){
 	    	  System.out.println("You are now logged on as" + currentUser.getName() + ".");
 	    	  menu_input = "";
-	    	  	Scanner input = new Scanner(System.in);
+	    	  	
 				System.out.println("1: Change Password");
 				System.out.println("2: Log off");
 				System.out.println("3: Post message");
@@ -75,6 +75,7 @@ public class GroupProject {
 				}
 	    	  
 	      }
+	      input.close();  
      
 	   }
 	   public static void getConnection(){
@@ -119,7 +120,7 @@ public class GroupProject {
 					}
 				}
 			}else{//if the user is already logged on
-				System.out.println("You are already logged in as " + currentUser.getName() + ". If you want to switch users, please log out first.");
+				System.out.println("You are already logged in as " + currentUser.getName() + " . If you want to switch users, please log out first.");
 			}
 			in.close();
 
