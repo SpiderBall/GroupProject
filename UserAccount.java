@@ -12,7 +12,11 @@ public class UserAccount {
       messagesPosted = 0;
    }
    
-   UserAccount(){} //default constructor
+   UserAccount(){
+	   username = null;
+	   password = null;
+	   messagesPosted = 0;
+   } //default constructor
    
    public void changePassword(Statement stat){
    //asks a user for a new password and then calls the backend password method with the information that they give
@@ -25,7 +29,6 @@ public class UserAccount {
       String changePassQuery = "UPDATE userlist " +
     		  					"SET password = '"+ newPassword + "'" +
 								"WHERE username = '" + username + "' ;";
-      System.out.println(changePassQuery);
       try{
     	  stat.executeUpdate(changePassQuery);
       }catch(Exception e){
@@ -68,22 +71,57 @@ public class UserAccount {
 	   }
 	   
 	   try{
+		   boolean found = false;
 		   String userName = null;
                while (rs.next()) {
-                 userName = rs.getString("username");                 
+                 userName = rs.getString("username");
+                 
+                 if(userName.equals(new_username)){
+                	 found = true;
+                	 break;
+                 }
+  			   	 else{continue;}
+  		   	
                }
-           	   
-		   	if(userName.equals(new_username)){
-		   		return true;
-		   	}else{
-		   		return false;
-		   	}
+             return found;
+               
+
 	   }catch(Exception e2){
 		   System.out.println(e2);
 		   return false;
 	   }
 	   
    }
+   
+   public boolean isThisTheCorrectPassword(String entered_username, String entered_password, Statement stat){
+	   
+	   String lookupPasswordQuery = "SELECT password FROM userlist WHERE username = '" + entered_username + "';";
+	   ResultSet rs = null;
+	   try{
+		   rs = stat.executeQuery(lookupPasswordQuery);
+	   }catch(Exception e){
+		   System.out.println(e);
+	   }
+	   
+	   try{
+		   boolean found = false;
+		   String userPassword = null;
+               while (rs.next()) {
+                 userPassword = rs.getString("password"); 
+                 if(userPassword.equals(entered_password)){
+                	 found = true;
+                	 break;
+                 }
+  				 else{continue;}
+               }
+              return found;
+               
+       }catch(Exception e2){
+		   System.out.println(e2);
+		   return false;
+	   	}
+   }
+   
    
    
    public void followUser(UserAccount toBeFollowed){
@@ -95,9 +133,6 @@ public class UserAccount {
    private String password;
    private int messagesPosted; //this should iterate every time the user posts a (public?) message with this account
    //there's a public method for that
-   
-   //ArrayList of objects of the PrivateMessage class
-   //PLACEHOLDER BECAUSE I HAVEN'T WRITTEN THAT CLASS YET
    
    //ArrayList of names of fellow users that this user is following
    //store it as a username because there's really no point in storing pointers to user accounts when we will only be using the name
