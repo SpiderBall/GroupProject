@@ -15,15 +15,14 @@ public class GroupProject {
 	      
 	      while(!menu_input.equalsIgnoreCase("Q")){
 			      while(!loggedOn){
-			    	  	//menu_input = "";
+			    	  
 						System.out.println("Welcome to GoSin, enter one of these options to get started!");
 						System.out.println("1: Register");
 						System.out.println("2: Log in");
 						System.out.println("3: Post anonymous message");
 						System.out.println("4: Browse messages as guest");
-						//System.out.println("5: Log Off");
 						System.out.println("Q: Quit");
-						//System.out.println(in.nextLine());
+						
 						menu_input = input.nextLine();
 					
 		
@@ -34,22 +33,25 @@ public class GroupProject {
 							login();
 						}
 						else if(menu_input.equals("3")){
+							System.out.println("Message posting is currently unavailable, check in again soon!");
 							
 						}
 						else if(menu_input.equals("4")){
+
+							System.out.println("Message browsing is currently unavailable, check in again soon!");
 							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
 							System.out.println("Have a nice day!");
 							break;
-						}
+						}else{
+							System.out.println("Please enter one of the choices specified above.");
+						}//end else
 						
-					}
-					//menu runs until the user quits or the use
+					}//end while not logged in
 			      
-			      //Scanner input = new Scanner(System.in);
 			      while(loggedOn){
-			    	  System.out.println("You are now logged on as" + currentUser.getName() + ".");
+			    	  System.out.println("You are now logged on as " + currentUser.getName() + ".");
 			    	  //menu_input = "";
 			    	  	
 						System.out.println("1: Change Password");
@@ -71,17 +73,26 @@ public class GroupProject {
 						}
 						else if(menu_input.equals("3")){
 							
+
+							System.out.println("Message posting is currently unavailable, check in again soon!");
+							
 						}
 						else if(menu_input.equals("4")){
+							
+
+							System.out.println("Message browsing is currently unavailable, check in again soon!");
 							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
 							System.out.println("Have a nice day!");
-							break;
-						}
-			      }
-	      	} 
-	   }
+							break;//breaks out of this while, should take the user to the not-logged-in menu
+						}else{
+
+							System.out.println("Please enter one of the choices specified above.");
+						}//end else
+			      }//end while logged in 
+	      	}//end while not q
+	   }//end main
 ///////////////////////////////////////////////////////////////////////////////////////////////	   
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////	   
@@ -108,10 +119,15 @@ public class GroupProject {
 					if(currentUser.doesUsernameExist(new_username, stat)){ //check if name matches a username in the system
 						System.out.println("Please enter your password ");
 						String new_password = input.nextLine();
-						currentUser = new UserAccount(new_username, new_password);
-						loggedOn = true;
-						System.out.println("Woo! You logged on successfully.");
-						loggedOn = true;
+						if(currentUser.isThisTheCorrectPassword(new_username, new_password, stat)){
+							currentUser = new UserAccount(new_username, new_password);
+							loggedOn = true;
+							System.out.println("Woo! You logged on successfully.");
+							
+						}else{
+							System.out.println("You entered the wrong password; please try again.");
+						}
+							
 					}else{
 
 						System.out.println("You entered the wrong username; please try again.");
@@ -119,6 +135,7 @@ public class GroupProject {
 					}
 				}
 			}else{//if the user is already logged on
+					//this shouldn't ever happen however, as users aren't given this option when they are logged on
 				System.out.println("You are already logged in as " + currentUser.getName() + " . If you want to switch users, please log out first.");
 			}
 	   }
@@ -156,11 +173,10 @@ public class GroupProject {
 		      }
 		   }
 ///////////////////////////////////////////////////////////////////////////////////////////////
-	   private ArrayList<Message> tweets;
-	   private static UserAccount currentUser = new UserAccount(); //the currently logged in account 
+	   //private ArrayList<Message> tweets; (not using these yet)
+	   private static UserAccount currentUser = new UserAccount(); //the current account being used 
 	   private static Connection con = null;
 	   private static Statement stat = null;
-	   private static ResultSet resultSet = null;
 	   private static boolean loggedOn = false; //this is a boolean to check if the user is online
 	}
 
