@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Message{
 
 	//the private message class will inherit from this class
-	//and it will add a data member "reciptient"
+	//and it will add a data member "recipient"
 	//which is the username of the person it was sent to
 	//and when an account logs in only those PMs will be loaded
 
@@ -25,33 +25,12 @@ public class Message{
 	      String reason = in.nextLine();
 	      deleteMessageBackend(reason);
 	      System.out.println("Message removed.");
-	      in.close();
+	      //in.close();
 	   }
 	   
 	   public void deleteMessageBackend(String reason){
 	      messageContent = ("Message has been removed. Reason given: '"+reason+"'.");
 	   }
-	   
-	/*
-	   public Message(User user, String new_message){
-
-			if(loggedOn){
-
-			}else{
-
-			}
-
-
-		}
-
-	///////////////adding messages to the file/////////////////////////////////
-	//writer.write("message no. " + numMessages + "posted on " date + ":");
-	//writer.write(message);
-	//numMessages++;
-
-		String message; */
-
-
 
 	   //DATA MEMBERS
 	   protected String messageContent;
