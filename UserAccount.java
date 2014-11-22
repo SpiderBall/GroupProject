@@ -15,17 +15,30 @@ public class UserAccount {
 	   
    }
    
-   public void changePassword(){
+   public void changePassword(Statement stat){
    //asks a user for a new password and then calls the backend password method with the information that they give
       System.out.println("Please enter your new password: ");
-      Scanner in = new Scanner(System.in);
-      String newPassword = in.next();
+      Scanner input = new Scanner(System.in);
+      String newPassword = input.next();
       changePassBackend(newPassword);
       System.out.println("Your password has been changed.");
-      in.close();
+      
+      String changePassQuery = "UPDATE userlist " +
+    		  					"SET password = '"+ newPassword + "'" +
+								"WHERE username = '" + username + "' ;";
+      System.out.println(changePassQuery);
+      try{
+    	  stat.executeUpdate(changePassQuery);
+      }catch(Exception e){
+    	  System.out.println(e);
+      }
+      	
+
+      
+      //in.close();
    }
    
-   public void changePassBackend(String newPassword){
+   public void changePassBackend(String newPassword){//OPTIONAL
    //this is here in case we ever need to change a password without going through the whole "asking the user stuff" business
    //for example: if we choose to implement a GUI
    //we would work this method in with that rather than calling the above one
@@ -49,37 +62,27 @@ public class UserAccount {
    }
    
    public boolean doesUsernameExist(String new_username, Statement stat){
-	   System.out.println("entering doesUsernameExist");
 	
 	   String lookupNameQuery = "SELECT username FROM userlist WHERE username = '" + new_username + "';";
 	   ResultSet rs = null;
 	   try{
-		System.out.println("entering try");
-	   	rs = stat.executeQuery(lookupNameQuery);
-	   	
-	   		
+		   rs = stat.executeQuery(lookupNameQuery);
 	   }catch(Exception e){
-		   System.out.println("entering catch");
 		   System.out.println(e);
 	   }
 	   
 	   try{
-		   System.out.println("entering try 2");
-		   //System.out.println(rs.getString("username"));
 		   String userName = null;
-		   //rs.beforeFirst();
                while (rs.next()) {
                  userName = rs.getString("username");                 
                }
-           
-		   
+           	   
 		   	if(userName.equals(new_username)){
 		   		return true;
 		   	}else{
 		   		return false;
 		   	}
 	   }catch(Exception e2){
-		   System.out.println("entering catch2");
 		   System.out.println(e2);
 		   return false;
 	   }
