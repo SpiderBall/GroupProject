@@ -1,4 +1,7 @@
+package groupProject;
+
 import java.util.*;
+import java.sql.*;
 
 public class UserAccount {
    
@@ -8,6 +11,9 @@ public class UserAccount {
       password = passIn;
       messagesPosted = 0;
    }
+   UserAccount(){
+	   
+   }
    
    public void changePassword(){
    //asks a user for a new password and then calls the backend password method with the information that they give
@@ -16,6 +22,7 @@ public class UserAccount {
       String newPassword = in.next();
       changePassBackend(newPassword);
       System.out.println("Your password has been changed.");
+      in.close();
    }
    
    public void changePassBackend(String newPassword){
@@ -40,6 +47,32 @@ public class UserAccount {
    public String getPass(){
       return password;
    }
+   
+   public boolean doesUsernameExist(String new_username, Statement stat){
+	   System.out.println("entering doesUsernameExist");
+	
+	   String lookupNameQuery = "SELECT username FROM userlist WHERE username = '" + new_username + "';";
+	   ResultSet rs = null;
+	   try{
+		System.out.println("entering try");
+	   	rs = stat.executeQuery(lookupNameQuery);
+	   	
+	   		
+	   }catch(Exception e){
+		   System.out.println("entering catch");
+		   System.out.println(e);
+	   }
+	   
+	   System.out.println(rs.toString());
+	   
+	   	if(rs.toString().equals(new_username)){
+	   		return true;
+	   	}else{
+	   		return false;
+	   	}
+	   
+   }
+   
    
    public void followUser(UserAccount toBeFollowed){
       subscriptions.add(toBeFollowed.getName());
