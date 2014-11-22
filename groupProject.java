@@ -10,11 +10,11 @@ public class GroupProject {
 	      //initializing the conditions of the program
 	      loggedOn = false;
 	      getConnection();
-	      String menu_input = null;
-	      //Scanner in = new Scanner(System.in);
+	      String menu_input;
+	      Scanner in = new Scanner(System.in);
 	      do{
-	    	  	menu_input = null;
-	    	  	Scanner in = new Scanner(System.in);
+	    	  	menu_input = "";
+	    	  	//Scanner in = new Scanner(System.in);
 				System.out.println("Welcome to GoSin, enter one of these options to get started!");
 				System.out.println("1: Register");
 				System.out.println("2: Log in");
@@ -22,38 +22,15 @@ public class GroupProject {
 				System.out.println("4: Browse messages as guest");
 				//System.out.println("5: Log Off");
 				System.out.println("Q: Quit");
+				//System.out.println(in.nextLine());
 				menu_input = in.nextLine();
 			
 
 				if(menu_input.equals("1")){
 					createAccount(currentUser);
-
 				}
 				else if(menu_input.equals("2")){
-
-					//boolean currentlyLoggedOn = loggedOn;
-					if(!loggedOn){
-						while(!loggedOn){
-							System.out.println("Please enter your username");
-							String new_username = in.nextLine();
-							if(currentUser.doesUsernameExist(new_username, stat)){ //check if name matches a username in the system
-								System.out.println("Please enter your password ");
-								String new_password = in.nextLine();
-								currentUser = new UserAccount(new_username, new_password);
-								loggedOn = true;
-								System.out.println("Woo! You logged on successfully.");
-								//currentlyLoggedOn = true;
-							}else{
-
-								System.out.println("You entered the wrong username; please try again.");
-
-							}
-						}
-					}else{//if the user is already logged on
-						System.out.println("You are already logged in as " + currentUser.getName() + ". If you want to switch users, please log out first.");
-					}
-
-
+					login();
 				}
 				else if(menu_input.equals("3")){
 					
@@ -64,21 +41,41 @@ public class GroupProject {
 				else if(menu_input.equals("Q")||menu_input.equals("q")){
 					System.out.println("Have a nice day!");
 				}
-				in.close();
+				
 			}while(!loggedOn &&(!menu_input.equals("Q"))&&(!menu_input.equals("q")));
 			//menu runs until the user quits or the use
+	      in.close();  
 	      
-	      
-	      
-	      while(loggedOn){
-	    	  System.out.println("You are now logged on as" + currentUser.getName()+".");
+	      while(loggedOn && (!menu_input.equals("Q"))&&(!menu_input.equals("q"))){
+	    	  System.out.println("You are now logged on as" + currentUser.getName() + ".");
+	    	  menu_input = "";
+	    	  	Scanner input = new Scanner(System.in);
+				System.out.println("1: Change Password");
+				System.out.println("2: Log off");
+				System.out.println("3: Post message");
+				System.out.println("4: Browse messages");
+				System.out.println("Q: Quit");
+				//System.out.println(in.nextLine());
+				menu_input = input.nextLine();
+				
+				if(menu_input.equalsIgnoreCase("1")){
+					
+				}
+				else if(menu_input.equals("2")){
+					
+				}
+				else if(menu_input.equals("3")){
+					
+				}
+				else if(menu_input.equals("4")){
+					
+				}
+				else if(menu_input.equals("Q")||menu_input.equals("q")){
+					System.out.println("Have a nice day!");
+				}
+	    	  
 	      }
-	      
-	      
-	      
-	      
-	      
-	      
+     
 	   }
 	   public static void getConnection(){
 	      //loads every tweet saved to the computer into an arraylist of tweets
@@ -101,6 +98,32 @@ public class GroupProject {
 	   } */
 	   public static void login(){
 	      //asks for a username and password and then finds that account in the text file for accounts
+		 //boolean currentlyLoggedOn = loggedOn;
+		   Scanner in = new Scanner(System.in);
+			if(!loggedOn){
+				while(!loggedOn){
+					System.out.println("Please enter your username");
+					String new_username = in.nextLine();
+					if(currentUser.doesUsernameExist(new_username, stat)){ //check if name matches a username in the system
+						System.out.println("Please enter your password ");
+						String new_password = in.nextLine();
+						currentUser = new UserAccount(new_username, new_password);
+						loggedOn = true;
+						System.out.println("Woo! You logged on successfully.");
+						//currentlyLoggedOn = true;
+						loggedOn = true;
+					}else{
+
+						System.out.println("You entered the wrong username; please try again.");
+
+					}
+				}
+			}else{//if the user is already logged on
+				System.out.println("You are already logged in as " + currentUser.getName() + ". If you want to switch users, please log out first.");
+			}
+			in.close();
+
+
 	      
 	   }
 	   public static void createAccount(UserAccount newAccount){
@@ -121,7 +144,7 @@ public class GroupProject {
 					
 				    // UserAccount newAccount = new UserAccount(username, password);
 					newAccount = new UserAccount(new_username, new_password);
-					//newAccount.setLoggedOnTrue();
+					loggedOn = true;
 					System.out.println("Congratulations! You now have an account with GoSin. GO FORTH AND FUCK SHIT UP.");
 					added = true;
 				}
@@ -145,7 +168,7 @@ public class GroupProject {
 	   private static Connection con = null;
 	   public static Statement stat = null;
 	   private static ResultSet resultSet = null;
-	   private static boolean loggedOn = false; //this is a bool to check if the use is online
+	   private static boolean loggedOn = false; //this is a boolean to check if the use is online
 	}
 
 	
