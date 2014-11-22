@@ -11,9 +11,8 @@ public class UserAccount {
       password = passIn;
       messagesPosted = 0;
    }
-   UserAccount(){
-	   
-   }
+   
+   UserAccount(){} //default constructor
    
    public void changePassword(Statement stat){
    //asks a user for a new password and then calls the backend password method with the information that they give
@@ -32,10 +31,7 @@ public class UserAccount {
       }catch(Exception e){
     	  System.out.println(e);
       }
-      	
-
-      
-      //in.close();
+  
    }
    
    public void changePassBackend(String newPassword){//OPTIONAL
@@ -45,7 +41,7 @@ public class UserAccount {
       password = newPassword;
    }
    
-   public int iterateCounter(){
+   public int iterateCounter(){ //THIS MAY NOT BE NEEDED ANYMORE
    //adds 1 to the counter of (public?) messages posted
    //we're gonna call this whenever someone posts a public message
    //and this number is going to be displayed on the profile along with the other information
@@ -61,7 +57,7 @@ public class UserAccount {
       return password;
    }
    
-   public boolean doesUsernameExist(String new_username, Statement stat){
+   public boolean doesUsernameExist(String new_username, Statement stat){//checks if a username is in the system
 	
 	   String lookupNameQuery = "SELECT username FROM userlist WHERE username = '" + new_username + "';";
 	   ResultSet rs = null;
