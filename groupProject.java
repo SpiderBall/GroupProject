@@ -6,14 +6,15 @@ import java.sql.*;
 public class GroupProject {
 
 
-
 	   public static void main(String[] args){
 	      //initializing the conditions of the program
-	      signedIn = false;
+	      loggedOn = false;
 	      getConnection();
-	      String menu_input = "";
-	      Scanner in = new Scanner(System.in);
+	      String menu_input = null;
+	      //Scanner in = new Scanner(System.in);
 	      do{
+	    	  	menu_input = null;
+	    	  	Scanner in = new Scanner(System.in);
 				System.out.println("Welcome to GoSin, enter one of these options to get started!");
 				System.out.println("1: Register");
 				System.out.println("2: Log in");
@@ -63,8 +64,19 @@ public class GroupProject {
 				else if(menu_input.equals("Q")||menu_input.equals("q")){
 					System.out.println("Have a nice day!");
 				}
+				in.close();
 			}while(!loggedOn &&(!menu_input.equals("Q"))&&(!menu_input.equals("q")));
 			//menu runs until the user quits or the use
+	      
+	      
+	      
+	      while(loggedOn){
+	    	  System.out.println("You are now logged on as" + currentUser.getName()+".");
+	      }
+	      
+	      
+	      
+	      
 	      
 	      
 	   }
@@ -105,7 +117,7 @@ public class GroupProject {
 				}else{
 
 					System.out.println("Please enter a password, don't forget it! ");
-					new_password = in.nextLine();
+					new_password = in.next();
 					
 				    // UserAccount newAccount = new UserAccount(username, password);
 					newAccount = new UserAccount(new_username, new_password);
@@ -114,35 +126,22 @@ public class GroupProject {
 					added = true;
 				}
 			}
-			
-	      //asks for info to make a new account
 	      
-
-	      //CHECK TO SEE IF THE USERNAME ALREADY EXISTS
-	      
-
-	      
-
-	      
-	      String insertQuery = "INSERT INTO usernames" +
-	    		  			"VALUES (" + new_username + ", " + new_password + ");";
-	      try{
-	    	  resultSet = stat.executeQuery(insertQuery);
-	      //CREATE A NEW TEXT FILE DEDICATED TO THE USER ACCOUNT
-	      //I'M TOO LAZY TO DO THAT RIGHT NOW THOUGH
-	      
-	    	  currentUser = newAccount;
-	      }catch(Exception e){
-	    	System.out.println(e);  
-	      }finally{
-	    	  in.close();
-	      }
-	      //^Holy shit that is confusing to say aloud^
-	      
-	   }
+		      String insertQuery = "INSERT INTO userlist (username,password)" +
+		    		  			"VALUES ( '" + new_username + "' , '" + new_password + "' );";
+		      try{
+		    	  stat.execute(insertQuery);		      
+		    	  currentUser = newAccount;
+		      }catch(Exception e){
+		    	System.out.println(e);  
+		      }finally{
+		    	  in.close();
+		      }
+		   }
+	   
 	   private ArrayList<Message> tweets;
 	   private static UserAccount currentUser = new UserAccount(); //the currently logged in account (changed the name from loggedIn, i found that confusing)
-	   private static boolean signedIn;
+	   //private static boolean signedIn;
 	   private static Connection con = null;
 	   public static Statement stat = null;
 	   private static ResultSet resultSet = null;
