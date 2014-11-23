@@ -123,6 +123,37 @@ public class UserAccount {
    }
    
    
+   public int getUserID(Statement stat){
+	   int userID = 0;
+	   
+	   System.out.println(username);
+	   
+	   String retrieveUserIDQuery = "SELECT id FROM userlist WHERE username = '" + username +"';";
+	   System.out.println(retrieveUserIDQuery);
+	   ResultSet rs = null;
+	   try{
+	   		rs = stat.executeQuery(retrieveUserIDQuery);
+	   }catch(Exception e){
+		   System.out.println("entering catch");
+		   System.out.println(e);
+	   }
+	   
+	   
+	   try{
+           while (rs.next()) {
+             userID = rs.getInt("id"); 
+             System.out.println(userID);
+             return userID;
+           }
+      }catch(Exception e2){
+		   System.out.println(e2);
+	   	}
+	   
+	   return userID;
+	   
+   }
+   
+   
    
    public void followUser(UserAccount toBeFollowed){
       subscriptions.add(toBeFollowed.getName());

@@ -1,5 +1,8 @@
 package groupProject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.sql.*;
 
 
@@ -74,7 +77,8 @@ public class GroupProject {
 						else if(menu_input.equals("3")){
 							
 
-							System.out.println("Message posting is currently unavailable, check in again soon!");
+							//System.out.println("Message posting is currently unavailable, check in again soon!");
+							postMessage(stat);
 							
 						}
 						else if(menu_input.equals("4")){
@@ -173,6 +177,68 @@ public class GroupProject {
 		      }
 		   }
 ///////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   
+	   public static  boolean postMessage(Statement stat){
+		   boolean found = false;
+		   
+		   //ResultSet rs = null;
+		   //String postedmessage = null;
+		   Scanner in = new Scanner(System.in);
+		   System.out.println("Enter a message, please make it under 140 characters.");
+		   String new_message = in.next();
+
+		   /*
+		   DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		   Date date = new Date();
+		   System.out.println(dateFormat.format(date));*/
+		   
+		    java.util.Date utilDate = new java.util.Date();
+		    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		    System.out.println("utilDate:" + utilDate);
+		    System.out.println("sqlDate:" + sqlDate);
+		    //calendar.get(Calendar.HOUR);
+		    
+		    Calendar cal = Calendar.getInstance();
+		    
+		    
+		    cal.set( cal.MILLISECOND, 0 );
+		    
+		    java.sql.Time sqlTime = 
+		       new java.sql.Time( cal.getTime().getTime() );
+		    
+		    System.out.println(sqlTime);
+		    
+		    
+		   
+		   
+		   int id = currentUser.getUserID(stat);
+		   
+		   String insertmessageQuery = "INSERT INTO messagelist (userID, datePosted, content)"
+				   + "VALUES ( '"+ id +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message+ "');";
+		   System.out.println(insertmessageQuery);
+		   
+		   try{
+			   stat.execute(insertmessageQuery);
+		   }catch(Exception e){
+			   System.out.println(e);
+		   }
+		   
+		   /*try{
+	           while (rs.next()) {
+	             postedmessage = rs.getString("message"); 
+	             found = true;
+	           }
+	      }catch(Exception e2){
+			   System.out.println(e2);
+		   	}*/
+		   
+		   return found;
+	   }
+	   
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   
 	   //private ArrayList<Message> tweets; (not using these yet)
 	   private static UserAccount currentUser = new UserAccount(); //the current account being used 
 	   private static Connection con = null;

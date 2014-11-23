@@ -1,5 +1,8 @@
 package groupProject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Message{
@@ -18,6 +21,12 @@ public class Message{
 	      //down here we store the date and time that the message was created
 	      //but I haven't done that yet
 	   }
+	   
+	   
+
+	   
+	   
+	   
 	   
 	   public void deleteMessage(){
 	      Scanner in = new Scanner(System.in);
