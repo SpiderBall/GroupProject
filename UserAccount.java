@@ -5,7 +5,6 @@ import java.sql.*;
 
 public class UserAccount {
    
-   //simple constructor
    UserAccount(String userIn, String passIn){
       username = userIn;
       password = passIn;
@@ -44,13 +43,13 @@ public class UserAccount {
       password = newPassword;
    }
    
-   public int iterateCounter(){ //THIS MAY NOT BE NEEDED ANYMORE
+   /*public int iterateCounter(){ //THIS MAY NOT BE NEEDED ANYMORE
    //adds 1 to the counter of (public?) messages posted
    //we're gonna call this whenever someone posts a public message
    //and this number is going to be displayed on the profile along with the other information
       messagesPosted++;
       return messagesPosted;
-   }
+   }*/
    
    public String getName(){
       return username;
@@ -152,8 +151,7 @@ public class UserAccount {
 	   return userID;
 	   
    }
-   
-   
+ 
    
    public void followUser(UserAccount toBeFollowed){
       subscriptions.add(toBeFollowed.getName());
