@@ -12,8 +12,8 @@ public class UserAccount {
    }
    
    UserAccount(){
-	   username = null;
-	   password = null;
+	   username = "";
+	   password = "";
 	   messagesPosted = 0;
    } //default constructor
    

@@ -19,8 +19,7 @@ public class GroupProject {
 			    	  
 			    	  	printGuestMenu();
 
-						menu_input = input.nextLine();
-					
+						menu_input = input.nextLine();					
 		
 						if(menu_input.equals("1")){
 							createAccount(currentUser);
@@ -29,18 +28,50 @@ public class GroupProject {
 							login();
 						}
 						else if(menu_input.equals("3")){
-							System.out.println("Message posting is currently unavailable, check in again soon!");
+							postMessage();
 							
 						}
 						else if(menu_input.equals("4")){
-
-							//System.out.println("Message browsing is currently unavailable, check in again soon!");
 							showPublicMessages();
 							
 						}
 						else if(menu_input.equals("5")){
 
-							System.out.println("searching is currently unavailable, check in again soon!");
+							System.out.println("Please enter the name of the user you would like to search.");
+							String searchedUserName = input.nextLine();
+							searchUser(searchedUserName);
+							System.out.println("Would you like to:");
+							System.out.println("1: Subscribe to this user");
+							System.out.println("2: View this user's profile description");
+							System.out.println("3: View this user's messages?");
+							
+							String menu_input2 = input.nextLine();
+							
+							if(menu_input2.equals("1")){
+								
+								System.out.println("Subscribing to users is currently unavailable, but check again soon!");
+								
+							}else if(menu_input2.equals("2")){
+								
+								System.out.println("one moment...");
+								viewDescription(searchedUserName);
+								
+								
+							}else if(menu_input2.equals("3")){
+								
+								viewMessagesFromUser(searchedUserName);
+								
+							}else{
+								System.out.println("Please enter one of the choices specified above.");
+							}
+							
+							
+							
+							
+						}else if(menu_input.equals("6")){
+							
+
+							System.out.println("Searching for a hashtag is currently unavailable, but check again soon!");
 							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
@@ -75,21 +106,54 @@ public class GroupProject {
 						}
 						else if(menu_input.equals("4")){
 							
-
-							//System.out.println("Message browsing is currently unavailable, check in again soon!");
 							showPublicMessages();
-							
 						}
 						else if(menu_input.equals("5")){
+							System.out.println("Please enter the name of the user you would like to search.");
+							String searchedUserName = input.nextLine();
+							searchUser(searchedUserName);
+							
+							System.out.println("Would you like to:");
+							System.out.println("1: Subscribe to this user");
+							System.out.println("2: View this user's profile description");
+							System.out.println("3: View this user's messages?");
+							
+							String menu_input2 = input.nextLine();
+							
+							if(menu_input2.equals("1")){
+								
+								System.out.println("Subscribing to users is currently unavailable, but check again soon!");
+								
+							}else if(menu_input2.equals("2")){
+								
+								//System.out.println("Viewing user descriptions is currently unavailable, but check again soon!");
+								viewDescription(searchedUserName);
+								
+							}else if(menu_input2.equals("3")){
+								
+								viewMessagesFromUser(searchedUserName);
+								
+							}else{
+								System.out.println("Please enter one of the choices specified above.");
+							}
+							
+						}else if(menu_input.equals("6")){
+							
+							createDescription();
+														
+						}else if(menu_input.equals("7")){
+							
+							viewMessagesFromUser(currentUser.getName());
+							
+						}else if(menu_input.equals("8")){
 
-							System.out.println("searching is currently unavailable, check in again soon!");
+							System.out.println("Searching for a hashtag is currently unavailable, but check again soon!");
 							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
 							System.out.println("Have a nice day!");
 							break;//breaks out of this while, should take the user to the not-logged-in menu
 						}else{
-
 							System.out.println("Please enter one of the choices specified above.");
 						}//end else
 			      }//end while logged in 
@@ -118,8 +182,8 @@ public class GroupProject {
 			System.out.println("3: Post anonymous message");
 			System.out.println("4: Browse messages as guest");
 			System.out.println("5: Search for a user");
-			System.out.println("Q: Quit");
-			
+			System.out.println("6: Search for a hashtag");
+			System.out.println("Q: Quit");			
 	   }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +197,7 @@ public class GroupProject {
 				System.out.println("5: Search for a user");
 				System.out.println("6: Create/edit a profile description");
 				System.out.println("7: View my messages");
+				System.out.println("8: Search for a hashtag");
 				System.out.println("Q: Quit");
 	   }
 	   
@@ -203,12 +268,13 @@ public class GroupProject {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 	   
 	   
-	   public static  boolean postMessage(){
+	   public static void postMessage(){
 		   boolean found = false;
 		   
 		   Scanner in = new Scanner(System.in);
 		   System.out.println("Enter a message, please make it under 140 characters.");
-		   String new_message = in.next();
+		   String new_message = in.nextLine();
+		   String originalPoster = currentUser.getName();
 
 		   
 		    java.util.Date utilDate = new java.util.Date();
@@ -223,8 +289,8 @@ public class GroupProject {
 		    
 		   int id = currentUser.getUserID(stat);
 		   
-		   String insertmessageQuery = "INSERT INTO messagelist (userID, datePosted, content)"
-				   + "VALUES ( '"+ id +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message+ "');";
+		   String insertmessageQuery = "INSERT INTO messagelist (username, datePosted, message_content)"
+				   + "VALUES ( '"+ originalPoster +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message+ "');";
 		   
 		   try{
 			   stat.execute(insertmessageQuery);
@@ -241,7 +307,7 @@ public class GroupProject {
 			   System.out.println(e2);
 		   	}*/
 		   
-		   return found;
+		   //return found;
 	   }
 	   
 
@@ -250,48 +316,25 @@ public class GroupProject {
 	   public static void showPublicMessages(){
 		   String showPublicMessagesQuery = "SELECT * FROM messagelist;";
 		   String postedMessage = "";
-		   int originalPosterID = 0;
 		   String originalPoster = "";
 		   Date postedDate = null;
 		   Time postedTime = null;
-		   String getUserNameBasedOnIDQuery = "";
+		   
 		   
 		   try{//try 1
 		   		ResultSet rs = stat.executeQuery(showPublicMessagesQuery);
 		   		
 		   		try{
 		           while (rs.next()) {
-		        	 originalPosterID = rs.getInt("userID");
-		        	 getUserNameBasedOnIDQuery = "SELECT username FROM userlist WHERE id = " + originalPosterID + ";";
-		        	 
-		        	 
-		        	 /* This is supposed to print the originalPoster's username, but I can't figure out how 
-		        	  * to do that without closing the ResultSet rs, which allows the datetime and content
-		        	  * of the message to be printed
-		        	  * 
-		        	 try{
-		        		ResultSet rs2 = stat.executeQuery(getUserNameBasedOnIDQuery); 
-		        		try{
-		        			while(rs2.next()){
-		        				originalPoster = rs2.getString("username");
-		        				System.out.print(originalPoster);
-		        			}
-		        			
-		        		}catch(Exception e4){
-		        			System.out.println("e4:" + e4);
-		        		}
-		        	 }catch(Exception e3){ //e3... 3 errors... HALF LIFE 3 CONFIRMED
-		        		 System.out.println("e3:" + e3);	        		 
-		        	 }*/
-		        	 
+		        	 originalPoster = rs.getString("username");
+		        	
 		        	 
 		        	 postedDate = rs.getDate("datePosted");
 		        	 postedTime = rs.getTime("datePosted");
-		             postedMessage = rs.getString("content"); 
-		             //found = true;
+		             postedMessage = rs.getString("message_content"); 
 
-		             System.out.print(postedDate + " | " + postedTime);
-		             //System.out.println(postedTime);
+		             System.out.print(originalPoster + " | " + postedDate + " | " + postedTime);
+		             System.out.println();
 		             System.out.println(postedMessage);
 		             System.out.println();
 		           }
@@ -304,8 +347,112 @@ public class GroupProject {
 		   }
 	   }
 	   
-	   
 ///////////////////////////////////////////////////////////////////////////////////////////////	   
+	   
+	   public static void searchUser(String enteredUsername){
+		   
+		   String searchForUserQuery = "SELECT * FROM userlist WHERE username = '" + enteredUsername + "';";
+		   String searchedUserName = "";
+				   
+		   
+		   try{//try 1
+		   		ResultSet rs = stat.executeQuery(searchForUserQuery);
+		   		
+		   		try{
+		           while (rs.next()) {
+		        	 searchedUserName = rs.getString("username");
+		        	 System.out.println(searchedUserName);
+		        	 
+		        	 
+		           }
+		      }catch(Exception e2){
+		    	  System.out.println("e2:" + e2);
+			   	}
+	   
+		   }catch(Exception e){
+			   System.out.println("e:" + e);
+		   }
+	   }	
+//////////////////////////////////////////////////////////////////////////////////////////////////
+	   public static void createDescription(){
+		   Scanner input = new Scanner(System.in);
+		   System.out.println("Please enter a brief description that you would like people to see on your GoSin profile:");
+		   String new_description = input.nextLine();
+		   String updateDescriptionQuery = "UPDATE userlist SET description = '" + new_description + "' WHERE username = '" + currentUser.getName() + "';";
+		   try{
+			   stat.execute(updateDescriptionQuery);
+		   }catch(Exception e){System.out.println("CD e:" + e);}
+		   
+		  }//end createDescription	   	   
+	   
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   public static void viewMessagesFromUser(String entered_username){
+		   Scanner input = new Scanner(System.in);
+		   String selectMessagesQuery = "SELECT * FROM messagelist WHERE username = '" + entered_username + "';";
+		   String postedMessage = "";
+		   String originalPoster = "";
+		   Date postedDate = null;
+		   Time postedTime = null;
+		   
+		   
+		   try{//try 1
+		   		ResultSet rs = stat.executeQuery(selectMessagesQuery);
+		   		
+		   		try{
+		           while (rs.next()) {
+		        	 originalPoster = rs.getString("username");
+		        	
+		        	 
+		        	 postedDate = rs.getDate("datePosted");
+		        	 postedTime = rs.getTime("datePosted");
+		             postedMessage = rs.getString("message_content"); 
+
+		             System.out.print(originalPoster + " | " + postedDate + " | " + postedTime);
+		             System.out.println();
+		             System.out.println(postedMessage);
+		             System.out.println();
+		           }
+		      }catch(Exception e2){
+		    	  System.out.println("VMe2:" + e2);
+			   	}
+	   
+		   }catch(Exception e){
+			   System.out.println("VMe:" + e);
+		   }
+	   }
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   public static void viewDescription(String entered_username){
+		   Scanner input = new Scanner(System.in);
+		   ResultSet rs = null;
+		   String searched_description = "";
+		   String showDescriptionQuery = "SELECT description FROM userlist WHERE username = '"  + "';";
+		   try{
+			   System.out.println("entering first try");
+			   
+			   rs = stat.executeQuery(showDescriptionQuery);
+			   //System.out.println(rs);
+			   try{
+				   System.out.println("entering second try");
+				   while(rs!=null){
+					   System.out.println("entering while");
+					   searched_description = rs.getString("description");
+					   System.out.println(searched_description);
+				   }
+				   
+			   }catch(Exception e2){
+				   System.out.println("VDe2:" + e2);
+			   }
+			   
+		   }catch(Exception e){
+			   System.out.println("VDe:" + e);
+		   }
+	   }
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   
+	   
+	   
 	   //private ArrayList<Message> tweets; (not using these yet)
 	   private static UserAccount currentUser = new UserAccount(); //the current account being used 
 	   private static Connection con = null;
