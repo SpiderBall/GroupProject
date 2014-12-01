@@ -41,23 +41,17 @@ public class GroupProject {
 							String searchedUserName = input.nextLine();
 							searchUser(searchedUserName);
 							System.out.println("Would you like to:");
-							System.out.println("1: Subscribe to this user");
-							System.out.println("2: View this user's profile description");
-							System.out.println("3: View this user's messages?");
+							System.out.println("1: View this user's profile description");
+							System.out.println("2: View this user's messages?");
 							
 							String menu_input2 = input.nextLine();
 							
 							if(menu_input2.equals("1")){
-								
-								System.out.println("Subscribing to users is currently unavailable, but check again soon!");
-								
-							}else if(menu_input2.equals("2")){
-								
 								System.out.println("one moment...");
 								viewDescription(searchedUserName);
 								
 								
-							}else if(menu_input2.equals("3")){
+							}else if(menu_input2.equals("2")){
 								
 								viewMessagesFromUser(searchedUserName);
 								
@@ -106,7 +100,9 @@ public class GroupProject {
 						}
 						else if(menu_input.equals("4")){
 							
-							showPublicMessages();
+							//showPublicMessages();
+							//System.out.println("Viewing subscribed messages is currently unavailable.");
+							showMessagesFromSubscriptions();
 						}
 						else if(menu_input.equals("5")){
 							System.out.println("Please enter the name of the user you would like to search.");
@@ -122,7 +118,9 @@ public class GroupProject {
 							
 							if(menu_input2.equals("1")){
 								
-								System.out.println("Subscribing to users is currently unavailable, but check again soon!");
+								//System.out.println("Subscribing to users is currently unavailable, but check again soon!");
+								subscribeToUser(searchedUserName);
+								
 								
 							}else if(menu_input2.equals("2")){
 								
@@ -148,6 +146,16 @@ public class GroupProject {
 						}else if(menu_input.equals("8")){
 
 							System.out.println("Searching for a hashtag is currently unavailable, but check again soon!");
+							
+						}
+						else if(menu_input.equals("9")){
+
+							showSubscribers();
+							
+						}
+						else if(menu_input.equals("10")){
+
+							showUserSubscriptions();
 							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
@@ -198,6 +206,8 @@ public class GroupProject {
 				System.out.println("6: Create/edit a profile description");
 				System.out.println("7: View my messages");
 				System.out.println("8: Search for a hashtag");
+				System.out.println("9: View subscribers");
+				System.out.println("10: View your subscriptions");
 				System.out.println("Q: Quit");
 	   }
 	   
@@ -274,6 +284,21 @@ public class GroupProject {
 		   Scanner in = new Scanner(System.in);
 		   System.out.println("Enter a message, please make it under 140 characters.");
 		   String new_message = in.nextLine();
+		   int priv = 0;//boolean value for database, whether the message is private
+		   
+		   if(loggedOn){
+			   System.out.println("Would you like your message to be private? (y/n)");
+			   String new_input = in.next();
+
+			   if(new_input.equals("y")){
+				   priv = 1;
+			   }else{
+				   priv = 0;
+			   }
+		   }
+		   
+			   
+		   
 		   String originalPoster = currentUser.getName();
 
 		   
@@ -289,8 +314,8 @@ public class GroupProject {
 		    
 		   int id = currentUser.getUserID(stat);
 		   
-		   String insertmessageQuery = "INSERT INTO messagelist (username, datePosted, message_content)"
-				   + "VALUES ( '"+ originalPoster +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message+ "');";
+		   String insertmessageQuery = "INSERT INTO messagelist (username, datePosted, message_content, private)"
+				   + "VALUES ( '"+ originalPoster +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message + "','" + priv +"' );";
 		   
 		   try{
 			   stat.execute(insertmessageQuery);
@@ -314,7 +339,7 @@ public class GroupProject {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 	   public static void showPublicMessages(){
-		   String showPublicMessagesQuery = "SELECT * FROM messagelist;";
+		   String showPublicMessagesQuery = "SELECT * FROM messagelist WHERE private = 0;";
 		   String postedMessage = "";
 		   String originalPoster = "";
 		   Date postedDate = null;
@@ -431,7 +456,6 @@ public class GroupProject {
 			   System.out.println("entering first try");
 			   
 			   rs = stat.executeQuery(showDescriptionQuery);
-			   //System.out.println(rs);
 			   try{
 				   System.out.println("entering second try");
 				   while(rs!=null){
@@ -450,8 +474,142 @@ public class GroupProject {
 	   }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 	   
+	   public static void subscribeToUser(String usernameToSubscribeTo){
+		   
+		   System.out.println("Attempting to subscribe to " + usernameToSubscribeTo + ".");
+		   String insertSubscriptionQuery = "INSERT INTO subscribers (subscriber_name, subscribed_user_name) VALUES ('" + currentUser.getName() + "', '" + usernameToSubscribeTo + "');" ;
+		   System.out.println(insertSubscriptionQuery);
+		   
+		   
+		   try{
+			    stat.execute(insertSubscriptionQuery);
+		   		System.out.println("You are now subscribed to " + usernameToSubscribeTo + ".");
+		   }catch(Exception e){
+			   System.out.println("SU e: " + e);
+			   System.out.println("Could not subscribe to " + usernameToSubscribeTo + ".");
+		   }
+		   
+		   
+	   }
+	   
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   public static void showSubscribers(){
+		   String showSubscribersQuery = "SELECT subscriber_name FROM subscribers WHERE subscribed_user_name = '" + currentUser.getName() + "';";
+		   //String subscriber = "";
+		   
+		   try{
+		   	ResultSet rs = stat.executeQuery(showSubscribersQuery);
+		   	try{
+		   		while(rs.next()){
+		   			
+		   			System.out.println(rs.getString("subscriber_name"));
+		   			
+		   		}
+		   	}catch(Exception e2){
+		   		System.out.println("SS e2:" + e2);
+		   	}
+		   	
+		   	
+		   	
+		   }catch(Exception e){
+			   System.out.println("SS e:" + e);
+		   }
+	   }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   public static void showUserSubscriptions(){//profiles that a user has subscribed to
+		
+		   String showSubscribersQuery = "SELECT subscribed_user_name FROM subscribers WHERE subscriber_name = '" + currentUser.getName() + "';";
+		   //String subscriber = "";
+		   
+		   try{
+		   	ResultSet rs = stat.executeQuery(showSubscribersQuery);
+		   	try{
+		   		while(rs.next()){
+		   			
+		   			System.out.println(rs.getString("subscribed_user_name"));
+		   			
+		   		}
+		   	}catch(Exception e2){
+		   		System.out.println("SS e2:" + e2);
+		   	}
+		   	
+		   	
+		   	
+		   }catch(Exception e){
+			   System.out.println("SS e:" + e);
+		   }
+		   
+	   }
 	   
 	   
+///////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   public static void showMessagesFromSubscriptions(){
+		   
+		   //PART ONE: GET SUBSCRIPTIONS
+		   String showSubscribersQuery = "SELECT subscribed_user_name FROM subscribers WHERE subscriber_name = '" + currentUser.getName() + "';";
+		   String subscribed_username = "";
+		   String originalPoster = "";
+		   Date postedDate = null;
+		   Time postedTime = null;
+		   String postedMessage = "";
+		   
+		   ArrayList<String> listOfSubscriptions = new ArrayList<String>(); 
+		   
+		   try{
+		   	ResultSet rs = stat.executeQuery(showSubscribersQuery);
+		   	try{
+		   		while(rs.next()){
+		   			
+		   			subscribed_username = rs.getString("subscribed_user_name");
+		   			listOfSubscriptions.add(subscribed_username);
+		   				   			
+		   		}
+		   	}catch(Exception e2){
+		   		System.out.println("SS e2:" + e2);
+		   	}
+		   	
+		   	
+		   	
+		   }catch(Exception e){
+			   System.out.println("SS e:" + e);
+		   }
+		   
+	   
+  			//PART TWO: FOR EACH SUBSCRIPTION, PRINT OUT ALL MESSAGES
+ 
+		   
+	String showSubscribedMessagesQuery = "";
+
+		for(int i = 0; i<listOfSubscriptions.size(); i++){
+			String subscribedUserNameToBePrintedOut = listOfSubscriptions.get(i);
+			showSubscribedMessagesQuery = "SELECT * FROM messagelist WHERE username = '" + subscribedUserNameToBePrintedOut + "';";
+		   try{
+			   ResultSet rs2 = stat.executeQuery(showSubscribedMessagesQuery);
+					while(rs2.next()){
+		   				originalPoster = rs2.getString("username");
+			        	
+			        	 
+			        	 postedDate = rs2.getDate("datePosted");
+			        	 postedTime = rs2.getTime("datePosted");
+			             postedMessage = rs2.getString("message_content"); 
+		
+			             System.out.print(originalPoster + " | " + postedDate + " | " + postedTime);
+			             System.out.println();
+			             System.out.println(postedMessage);
+			             System.out.println();
+		   			}
+			   }catch(Exception e3){
+				   System.out.println("SS e3:" + e3);
+			   }
+		}
+	   }
+	   
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 	   
 	   
 	   private static UserAccount currentUser = new UserAccount(); //the current account being used 
