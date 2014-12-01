@@ -453,7 +453,7 @@ public class GroupProject {
 	   
 	   
 	   
-	   //private ArrayList<Message> tweets; (not using these yet)
+	   
 	   private static UserAccount currentUser = new UserAccount(); //the current account being used 
 	   private static Connection con = null;
 	   private static Statement stat = null;
