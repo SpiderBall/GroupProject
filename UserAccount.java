@@ -36,20 +36,7 @@ public class UserAccount {
   
    }
    
-   public void changePassBackend(String newPassword){//OPTIONAL
-   //this is here in case we ever need to change a password without going through the whole "asking the user stuff" business
-   //for example: if we choose to implement a GUI
-   //we would work this method in with that rather than calling the above one
-      password = newPassword;
-   }
    
-   /*public int iterateCounter(){ //THIS MAY NOT BE NEEDED ANYMORE
-   //adds 1 to the counter of (public?) messages posted
-   //we're gonna call this whenever someone posts a public message
-   //and this number is going to be displayed on the profile along with the other information
-      messagesPosted++;
-      return messagesPosted;
-   }*/
    
    public String getName(){
       return username;
