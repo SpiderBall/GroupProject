@@ -47,7 +47,7 @@ public class GroupProject {
 							String menu_input2 = input.nextLine();
 							
 							if(menu_input2.equals("1")){
-								System.out.println("one moment...");
+								
 								viewDescription(searchedUserName);
 								
 								
@@ -62,14 +62,9 @@ public class GroupProject {
 							
 							
 							
-						}else if(menu_input.equals("6")){
-							
-
-							System.out.println("Searching for a hashtag is currently unavailable, but check again soon!");
-							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
-							System.out.println("Have a nice day!");
+							System.out.println("Have an evil day!");
 							break;
 						}else{
 							System.out.println("Please enter one of the choices specified above.");
@@ -91,7 +86,8 @@ public class GroupProject {
 						else if(menu_input.equals("2")){
 							
 							loggedOn = false;
-							
+							currentUser.setName("");
+							currentUser.setPass("");
 						}
 						else if(menu_input.equals("3")){
 							
@@ -100,8 +96,6 @@ public class GroupProject {
 						}
 						else if(menu_input.equals("4")){
 							
-							//showPublicMessages();
-							//System.out.println("Viewing subscribed messages is currently unavailable.");
 							showMessagesFromSubscriptions();
 						}
 						else if(menu_input.equals("5")){
@@ -118,13 +112,11 @@ public class GroupProject {
 							
 							if(menu_input2.equals("1")){
 								
-								//System.out.println("Subscribing to users is currently unavailable, but check again soon!");
 								subscribeToUser(searchedUserName);
 								
 								
 							}else if(menu_input2.equals("2")){
 								
-								//System.out.println("Viewing user descriptions is currently unavailable, but check again soon!");
 								viewDescription(searchedUserName);
 								
 							}else if(menu_input2.equals("3")){
@@ -143,9 +135,10 @@ public class GroupProject {
 							
 							viewMessagesFromUser(currentUser.getName());
 							
-						}else if(menu_input.equals("8")){
+						}
+						else if(menu_input.equals("8")){
 
-							System.out.println("Searching for a hashtag is currently unavailable, but check again soon!");
+							viewDescription(currentUser.getName());
 							
 						}
 						else if(menu_input.equals("9")){
@@ -159,7 +152,7 @@ public class GroupProject {
 							
 						}
 						else if(menu_input.equalsIgnoreCase("Q")){
-							System.out.println("Have a nice day!");
+							System.out.println("Have an evil day!");
 							break;//breaks out of this while, should take the user to the not-logged-in menu
 						}else{
 							System.out.println("Please enter one of the choices specified above.");
@@ -184,13 +177,12 @@ public class GroupProject {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 	   
 	   public static void printGuestMenu(){
-			System.out.println("Welcome to GoSin, enter one of these options to get started!");
+			System.out.println("Welcome to GoSin, the network for the infamous Gotham Crime Syndicate! Enter one of these options to get started!");
 			System.out.println("1: Register");
 			System.out.println("2: Log in");
 			System.out.println("3: Post anonymous message");
 			System.out.println("4: Browse messages as guest");
 			System.out.println("5: Search for a user");
-			System.out.println("6: Search for a hashtag");
 			System.out.println("Q: Quit");			
 	   }
 
@@ -205,7 +197,7 @@ public class GroupProject {
 				System.out.println("5: Search for a user");
 				System.out.println("6: Create/edit a profile description");
 				System.out.println("7: View my messages");
-				System.out.println("8: Search for a hashtag");
+				System.out.println("8: View my profile description");
 				System.out.println("9: View subscribers");
 				System.out.println("10: View your subscriptions");
 				System.out.println("Q: Quit");
@@ -266,8 +258,8 @@ public class GroupProject {
 				}
 			}
 	      
-		      String insertQuery = "INSERT INTO userlist (username,password)" +
-		    		  			"VALUES ( '" + new_username + "' , '" + new_password + "' );";
+		      String insertQuery = "INSERT INTO userlist (username,password, description)" +
+		    		  			"VALUES ( '" + new_username + "' , '" + new_password + "', ' ' );";
 		      try{
 		    	  stat.execute(insertQuery);		      
 		    	  currentUser = newAccount;
@@ -297,8 +289,6 @@ public class GroupProject {
 			   }
 		   }
 		   
-			   
-		   
 		   String originalPoster = currentUser.getName();
 
 		   
@@ -312,27 +302,16 @@ public class GroupProject {
 		    java.sql.Time sqlTime = 
 		       new java.sql.Time( cal.getTime().getTime() );
 		    
-		   int id = currentUser.getUserID(stat);
+		  // int id = currentUser.getUserID(stat);
 		   
 		   String insertmessageQuery = "INSERT INTO messagelist (username, datePosted, message_content, private)"
-				   + "VALUES ( '"+ originalPoster +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message + "','" + priv +"' );";
+				   + "VALUES ( '"+ originalPoster +"', '" + sqlDate + " " + sqlTime + "' , '"+ new_message + "','" + priv + "' );";
 		   
 		   try{
 			   stat.execute(insertmessageQuery);
 		   }catch(Exception e){
 			   System.out.println(e);
 		   }
-		   
-		   /*try{
-	           while (rs.next()) {
-	             postedmessage = rs.getString("message"); 
-	             found = true;
-	           }
-	      }catch(Exception e2){
-			   System.out.println(e2);
-		   	}*/
-		   
-		   //return found;
 	   }
 	   
 
@@ -413,7 +392,7 @@ public class GroupProject {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 	   
 	   public static void viewMessagesFromUser(String entered_username){
-		   Scanner input = new Scanner(System.in);
+		   //Scanner input = new Scanner(System.in);
 		   String selectMessagesQuery = "SELECT * FROM messagelist WHERE username = '" + entered_username + "';";
 		   String postedMessage = "";
 		   String originalPoster = "";
@@ -426,9 +405,7 @@ public class GroupProject {
 		   		
 		   		try{
 		           while (rs.next()) {
-		        	 originalPoster = rs.getString("username");
-		        	
-		        	 
+		        	 originalPoster = rs.getString("username");	        	 
 		        	 postedDate = rs.getDate("datePosted");
 		        	 postedTime = rs.getTime("datePosted");
 		             postedMessage = rs.getString("message_content"); 
@@ -451,25 +428,22 @@ public class GroupProject {
 		   Scanner input = new Scanner(System.in);
 		   ResultSet rs = null;
 		   String searched_description = "";
-		   String showDescriptionQuery = "SELECT description FROM userlist WHERE username = '"  + "';";
+		   String showDescriptionQuery = "SELECT description FROM userlist WHERE username = '"  + entered_username + "';";
 		   try{
-			   System.out.println("entering first try");
 			   
 			   rs = stat.executeQuery(showDescriptionQuery);
 			   try{
-				   System.out.println("entering second try");
-				   while(rs!=null){
-					   System.out.println("entering while");
+				   while(rs.next()){
 					   searched_description = rs.getString("description");
 					   System.out.println(searched_description);
 				   }
 				   
 			   }catch(Exception e2){
-				   System.out.println("VDe2:" + e2);
+				   System.out.println("VDe2:" + e2.getMessage());
 			   }
 			   
 		   }catch(Exception e){
-			   System.out.println("VDe:" + e);
+			   System.out.println("VDe:" + e.getMessage());
 		   }
 	   }
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -478,7 +452,6 @@ public class GroupProject {
 		   
 		   System.out.println("Attempting to subscribe to " + usernameToSubscribeTo + ".");
 		   String insertSubscriptionQuery = "INSERT INTO subscribers (subscriber_name, subscribed_user_name) VALUES ('" + currentUser.getName() + "', '" + usernameToSubscribeTo + "');" ;
-		   System.out.println(insertSubscriptionQuery);
 		   
 		   
 		   try{
@@ -522,7 +495,6 @@ public class GroupProject {
 	   public static void showUserSubscriptions(){//profiles that a user has subscribed to
 		
 		   String showSubscribersQuery = "SELECT subscribed_user_name FROM subscribers WHERE subscriber_name = '" + currentUser.getName() + "';";
-		   //String subscriber = "";
 		   
 		   try{
 		   	ResultSet rs = stat.executeQuery(showSubscribersQuery);
@@ -610,7 +582,6 @@ public class GroupProject {
 	   
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-	   
 	   
 	   private static UserAccount currentUser = new UserAccount(); //the current account being used 
 	   private static Connection con = null;

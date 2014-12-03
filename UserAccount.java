@@ -22,7 +22,7 @@ public class UserAccount {
       System.out.println("Please enter your new password: ");
       Scanner input = new Scanner(System.in);
       String newPassword = input.next();
-      changePassBackend(newPassword);
+      setPass(newPassword);
       System.out.println("Your password has been changed.");
       
       String changePassQuery = "UPDATE userlist " +
@@ -36,11 +36,28 @@ public class UserAccount {
   
    }
    
+   public void setPass(String newPassword){//OPTIONAL
+   //this is here in case we ever need to change a password without going through the whole "asking the user stuff" business
+   //for example: if we choose to implement a GUI
+   //we would work this method in with that rather than calling the above one
+      password = newPassword;
+   }
    
+   /*public int iterateCounter(){ //THIS MAY NOT BE NEEDED ANYMORE
+   //adds 1 to the counter of (public?) messages posted
+   //we're gonna call this whenever someone posts a public message
+   //and this number is going to be displayed on the profile along with the other information
+      messagesPosted++;
+      return messagesPosted;
+   }*/
    
    public String getName(){
       return username;
    }
+   
+   public void setName(String enteredUserName){
+	     username = enteredUserName;
+	   }
    
    public String getPass(){
       return password;
@@ -115,7 +132,6 @@ public class UserAccount {
 	   System.out.println(username);
 	   
 	   String retrieveUserIDQuery = "SELECT id FROM userlist WHERE username = '" + username +"';";
-	   System.out.println(retrieveUserIDQuery);
 	   ResultSet rs = null;
 	   try{
 	   		rs = stat.executeQuery(retrieveUserIDQuery);
